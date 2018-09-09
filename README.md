@@ -1,8 +1,8 @@
 事件管理
 ===
 
-[![Build Status](https://travis-ci.com/lsys/event.svg?branch=next_version)](https://travis-ci.com/lsys/event)
-[![Coverage Status](https://coveralls.io/repos/github/lsys/event/badge.svg?branch=next_version)](https://coveralls.io/github/lsys/event?branch=next_version)
+[![Build Status](https://travis-ci.com/lsys/event.svg?branch=master)](https://travis-ci.com/lsys/event)
+[![Coverage Status](https://coveralls.io/repos/github/lsys/event/badge.svg?branch=master)](https://coveralls.io/github/lsys/event?branch=master)
 
 > 事件管理基类,用于代码解耦
 
