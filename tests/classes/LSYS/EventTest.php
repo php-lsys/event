@@ -16,7 +16,7 @@ final class EventTest extends TestCase
         $em->attach($subject);
         $this->assertTrue($em->contains($subject));
         $em->dispatch(new \LSYS\EventManager\SimpleEvent("test_event_name",['test_param'=>'test data']));
-        $this->assertInstanceOf(\LSYS\EventManager::class, \LSYS\EventManager\DI::get()->event_manager());
+        $this->assertInstanceOf(\LSYS\EventManager::class, \LSYS\EventManager\DI::get()->eventManager());
         
         
         

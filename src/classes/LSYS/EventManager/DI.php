@@ -7,7 +7,7 @@
  */
 namespace LSYS\EventManager;
 /**
- * @method \LSYS\EventManager event_manager()
+ * @method \LSYS\EventManager eventManager()
  */
 class DI extends \LSYS\DI{
     /**
@@ -15,7 +15,7 @@ class DI extends \LSYS\DI{
      */
     public static function get(){
         $di=parent::get();
-        !isset($di->event_manager)&&$di->event_manager(new \LSYS\DI\SingletonCallback(function (){
+        !isset($di->eventManager)&&$di->eventManager(new \LSYS\DI\SingletonCallback(function (){
             return new \LSYS\EventManager();
         }));
         return $di;

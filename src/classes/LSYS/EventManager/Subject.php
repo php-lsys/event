@@ -24,21 +24,21 @@ class Subject implements \SplSubject{
         $this->storage= new \SplObjectStorage();
         $this->event_class=$event_class;
     }
-    public function is_match(Event $event){
+    public function isMatch(Event $event){
         return $event instanceof $this->event_class;
     }
     /**
      * Returns whether further event listeners should be triggered.
      * @return bool Whether propagation was already stopped for this event
      */
-    public function is_propagation_stopped()
+    public function isPropagationStopped()
     {
         return $this->propagationStopped;
     }
     /**
      * Stops the propagation of the event to further event listeners.
      */
-    public function stop_propagation()
+    public function stopPropagation()
     {
         $this->propagationStopped = true;
     }
@@ -77,7 +77,7 @@ class Subject implements \SplSubject{
      * get trigger notify event
      * @return \LSYS\EventManager
      */
-    public function event_manager(){
+    public function eventManager(){
         return $this->event_mgr;
     }
     /**
@@ -96,7 +96,7 @@ class Subject implements \SplSubject{
         }
         arsort($key,SORT_NUMERIC);
         foreach ($key as $k=>$_){
-            if ($this->is_propagation_stopped())break;
+            if ($this->isPropagationStopped())break;
             $value[$k]->update($this);
         }
         unset($key,$value);

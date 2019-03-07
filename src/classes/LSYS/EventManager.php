@@ -46,7 +46,7 @@ class EventManager{
     public function dispatch(Event $event){
         foreach ($this->storage as $v){
             assert($v instanceof Subject);
-            if($v->is_match($event)){
+            if($v->isMatch($event)){
                 $v->notify($event,$this);
             }
         }

@@ -15,9 +15,9 @@ include_once __DIR__."/../vendor/autoload.php";
 //     /**
 //      * @return EventManager
 //      */
-//     public function event_manager(){
+//     public function eventManager(){
 //         //default di
-//         return self::get()->event_manager();
+//         return self::get()->eventManager();
 //     }
 // }
 //
@@ -33,8 +33,8 @@ class eventitem extends Event{
 //使用全局事件管理器进行事件派发
 class dome_pppp{
     public function add(){
-        DI::get()->event_manager()->dispatch(new eventitem(111));//为每个事件定义一个类
-        DI::get()->event_manager()->dispatch(new SimpleEvent("test",['test_param1'=>'test param']));//懒得为每个事件定义一个类,可以派发一个通用事件.
+        DI::get()->eventManager()->dispatch(new eventitem(111));//为每个事件定义一个类
+        DI::get()->eventManager()->dispatch(new SimpleEvent("test",['test_param1'=>'test param']));//懒得为每个事件定义一个类,可以派发一个通用事件.
     }
 }
 //使用内部事件管理器进行事件派发
@@ -62,13 +62,13 @@ class dome_call1 implements Observer{
         $event=$subject->event();
         assert($event instanceof eventitem);
         var_dump($event->param);
-        //$subject->stop_propagation();//停止继续派发
+        //$subject->stopPropagation();//停止继续派发
     }
 }
 $eventsubsss->attach(new dome_call1);
 //定义回调函数方式处理
 $eventsubsss->attach(new CallbackObserver(function(Subject $subject){
-    if ($subject->event_manager()!==DI::get()->event_manager()){
+    if ($subject->eventManager()!==DI::get()->eventManager()){
         var_dump("inner object dispatch");
     }
     var_dump($subject->event()->param);
@@ -85,8 +85,8 @@ $eventsubsss1->attach(new CallbackObserver(function(Subject $subject){
 }));
 
 //往全局事件管理器添加监听
-DI::get()->event_manager()->attach($eventsubsss);
-DI::get()->event_manager()->attach($eventsubsss1);//通用事件简单监听
+DI::get()->eventManager()->attach($eventsubsss);
+DI::get()->eventManager()->attach($eventsubsss1);//通用事件简单监听
 //执行代码
 $ppp=new dome_pppp;
 $ppp->add();
