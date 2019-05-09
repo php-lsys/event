@@ -12,7 +12,7 @@ class EventManager{
     /**
      * @var \SplObjectStorage
      */
-    public $storage;
+    protected $storage;
     /**
      * event manage and dispatch
      */
@@ -25,6 +25,7 @@ class EventManager{
      */
     public function attach(Subject $subject){
         $this->storage->attach($subject);
+        return $this;
     }
     /**
      * check Subject in listen
@@ -39,6 +40,7 @@ class EventManager{
      */
     public function detach(Subject $subject=null){//
         $this->storage->detach($subject);
+        return $this;
     }
     /**
      * dispatch listen

@@ -49,6 +49,7 @@ class Subject implements \SplSubject{
      */
     public function attach(\SplObserver $observer,$priority = 0){//
         $this->storage->attach($observer,$priority);
+        return $this;
     }
     /**
      * contains an SplObserver
@@ -65,6 +66,7 @@ class Subject implements \SplSubject{
      */
     public function detach(\SplObserver $observer){//
         $this->storage->detach($observer);
+        return $this;
     }
     /**
      * get trigger notify event
@@ -88,7 +90,6 @@ class Subject implements \SplSubject{
         $this->event_obj=$event;
         $this->event_mgr=$event_manager;
         $key=$value=[];
-        $i=0;
         foreach ($this->storage as $v){
             $index=$this->storage[$v];
             $key[]=$index;
@@ -100,6 +101,7 @@ class Subject implements \SplSubject{
             $value[$k]->update($this);
         }
         unset($key,$value);
+        return $this;
     }
 }
 
