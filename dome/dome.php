@@ -52,9 +52,22 @@ class dome_pppp1{
 
 
 
+//doc .addlist('string',fn); fn(event)
+//doc .tigger('string');
 
 
+//派发事件 -> 事件<=>主题 
+//subject().add()
+//dbsubject().notify({
+    //update()
+//});
+//doc.tigger({
+//
+//})
+//doc.addlist(subject);
+//doc.tigger(group object)
 //-------------------注册事件处理---------------------------
+//1
 $eventsubsss=new Subject(eventitem::class);
 //定义类方式处理
 class dome_call1 implements Observer{
@@ -74,7 +87,7 @@ $eventsubsss->attach(new CallbackObserver(function(Subject $subject){
     var_dump($subject->event()->param);
 }),10);
 
-
+//2
 $eventsubsss1=new Subject(SimpleEvent::class);
 $eventsubsss1->attach(new CallbackObserver(function(Subject $subject){
     $event=$subject->event();

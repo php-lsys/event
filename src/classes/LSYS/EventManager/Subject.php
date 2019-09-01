@@ -96,7 +96,7 @@ class Subject implements \SplSubject{
             $value[]=$v;
         }
         arsort($key,SORT_NUMERIC);
-        foreach ($key as $k=>$_){
+        foreach (array_keys($key) as $k){
             if ($this->isPropagationStopped())break;
             $value[$k]->update($this);
         }
