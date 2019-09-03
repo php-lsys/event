@@ -7,6 +7,8 @@
  */
 namespace LSYS;
 use LSYS\EventManager\Event;
+use LSYS\EventManager\EventObserver;
+
 class EventManager{
     /**
      * @var array
@@ -18,9 +20,8 @@ class EventManager{
      * @param callable $callable
      * @return \LSYS\EventManager
      */
-    public function attach($event,callable $callable,$handle=null){
-        if(is_null($handle))$this->storage[$event][]=$callable;
-        $this->storage[$event][$handle]=$callable;
+    public function attach(EventObserver $observer){
+        $this->storage[$observer->eventName()][]=$observer;
         return $this;
     }
     /**
@@ -29,9 +30,9 @@ class EventManager{
      * @param callable $callable
      * @return boolean
      */
-    public function contains ($event,callable $callable) {
-        foreach ($this->storage[$event] as $v){
-            if($v===$callable)return true;
+    public function contains (EventObserver $observer) {
+        foreach ($this->storage[$observer->eventName()]??[] as $v){
+            if($v===$observer)return true;
         }
         return false;
     }
@@ -41,11 +42,10 @@ class EventManager{
      * @param callable $callable
      * @return boolean
      */
-    public function detach($event,$callable){//
-        foreach ($this->storage[$event] as $k=>$v){
-            if (is_callable($callable)) {
-                if($v===$callable)unset($this->storage[$event][$k]);
-            }else unset($this->storage[$event][$callable]);
+    public function detach($observer){
+        $event=$observer->eventName();
+        foreach ($this->storage[$event]??[] as $k=>$v){
+            if($v===$observer)unset($this->storage[$event][$k]);
         }
         return false;
     }
@@ -62,14 +62,10 @@ class EventManager{
      * dispatch listen
      */
     public function dispatch(Event $event){
-        foreach ($this->storage as $k=>$v){
-            if($k==$event->getName()){
-                foreach ($v as $c){
-                    call_user_func($c,$event);
-                    if($event->isPropagationStopped())break;
-                }
-                break;
-            }
+        $v=$this->storage[$event->getName()]??[];
+        foreach ($v as $c){
+            $c->eventNotify($event);
+            if($event->isPropagationStopped())break;
         }
     }
 }

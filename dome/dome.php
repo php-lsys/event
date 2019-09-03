@@ -5,10 +5,10 @@ include_once __DIR__."/../vendor/autoload.php";
 class eventitem extends Event{
     const AAA="BBB";
 }
-DI::get()->eventManager()->attach(eventitem::name(eventitem::AAA),function(eventitem $event){
+DI::get()->eventManager()->attach(eventitem::name(eventitem::AAA),new \LSYS\EventManager\EventCallback(function(eventitem $event){
     $sql=$event->data("sql");
     var_dump($sql);
-});
+}));
 //使用全局事件管理器进行事件派发
 class dome_pppp{
     public function add(){

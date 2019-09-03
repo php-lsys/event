@@ -8,9 +8,9 @@ final class EventTest extends TestCase
     public function testDispatch()
     {
         $data=null;
-        $call=function(TestEvent $event)use(&$data){
+        $call=new \LSYS\EventManager\EventCallback(function(TestEvent $event)use(&$data){
             $data=$event->data("sql");
-        };
+        });
         DI::get()->eventManager()->attach(TestEvent::name(TestEvent::TEST),$call);
         DI::get()->eventManager()->dispatch(new TestEvent(TestEvent::TEST,["sql"=>"1"]));
         $this->assertTrue($data=="1");
