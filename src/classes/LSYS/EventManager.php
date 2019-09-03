@@ -16,9 +16,8 @@ class EventManager{
     protected $storage=[];
     /**
      * add callback in listen
-     * @param string $event
-     * @param callable $callable
-     * @return \LSYS\EventManager
+     * @param EventObserver $observer
+     * @return $this
      */
     public function attach(EventObserver $observer){
         $this->storage[$observer->eventName()][]=$observer;
@@ -26,9 +25,8 @@ class EventManager{
     }
     /**
      * check callback in listen
-     * @param string $event
-     * @param callable $callable
-     * @return boolean
+     * @param EventObserver $observer
+     * @return bool
      */
     public function contains (EventObserver $observer) {
         foreach ($this->storage[$observer->eventName()]??[] as $v){
@@ -38,11 +36,10 @@ class EventManager{
     }
     /**
      * detach callback on listen
-     * @param string $event
-     * @param callable $callable
-     * @return boolean
+     * @param EventObserver $observer
+     * @return bool
      */
-    public function detach($observer){
+    public function detach(EventObserver $observer){
         $event=$observer->eventName();
         foreach ($this->storage[$event]??[] as $k=>$v){
             if($v===$observer)unset($this->storage[$event][$k]);
@@ -54,8 +51,8 @@ class EventManager{
      * @param string $event
      * @return boolean
      */
-    public function detachAll($event){//
-        $this->storage[$event]=[];
+    public function detachAll($event_name){//
+        $this->storage[$event_name]=[];
         return true;
     }
     /**
