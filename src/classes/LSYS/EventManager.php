@@ -6,50 +6,69 @@
  * @license    http://www.apache.org/licenses/LICENSE-2.0
  */
 namespace LSYS;
-use LSYS\EventManager\Subject;
 use LSYS\EventManager\Event;
 class EventManager{
     /**
-     * @var \SplObjectStorage
+     * @var array
      */
-    protected $storage;
+    protected $storage=[];
     /**
-     * event manage and dispatch
+     * add callback in listen
+     * @param string $event
+     * @param callable $callable
+     * @return \LSYS\EventManager
      */
-    public function __construct(){
-        $this->storage = new \SplObjectStorage();
-    }
-    /**
-     * add Subject to listen
-     * @param Subject $subject
-     */
-    public function attach(Subject $subject){
-        $this->storage->attach($subject);
+    public function attach($event,callable $callable,$handle=null){
+        if(is_null($handle))$this->storage[$event][]=$callable;
+        $this->storage[$event][$handle]=$callable;
         return $this;
     }
     /**
-     * check Subject in listen
-     * @param Subject $subject
+     * check callback in listen
+     * @param string $event
+     * @param callable $callable
+     * @return boolean
      */
-    public function contains (Subject $subject) {
-        return $this->storage->contains($subject);
+    public function contains ($event,callable $callable) {
+        foreach ($this->storage[$event] as $v){
+            if($v===$callable)return true;
+        }
+        return false;
     }
     /**
-     * detach Subject on listen
-     * @param Subject $subject
+     * detach callback on listen
+     * @param string $event
+     * @param callable $callable
+     * @return boolean
      */
-    public function detach(Subject $subject=null){//
-        $this->storage->detach($subject);
-        return $this;
+    public function detach($event,$callable){//
+        foreach ($this->storage[$event] as $k=>$v){
+            if (is_callable($callable)) {
+                if($v===$callable)unset($this->storage[$event][$k]);
+            }else unset($this->storage[$event][$callable]);
+        }
+        return false;
+    }
+    /**
+     * detach all callback on listen
+     * @param string $event
+     * @return boolean
+     */
+    public function detachAll($event){//
+        $this->storage[$event]=[];
+        return true;
     }
     /**
      * dispatch listen
      */
     public function dispatch(Event $event){
-        foreach ($this->storage as $v){
-            assert($v instanceof Subject);
-            if($v->isMatch($event)){
-                $v->notify($event,$this);
+        foreach ($this->storage as $k=>$v){
+            if($k==$event->getName()){
+                foreach ($v as $c){
+                    call_user_func($c,$event);
+                    if($event->isPropagationStopped())break;
+                }
+                break;
             }
         }
     }

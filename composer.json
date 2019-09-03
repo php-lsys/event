@@ -1,6 +1,7 @@
 {
 	"name" : "lsys/event",
-	"type" : "library","license": "Apache-2.0",
+	"type" : "library",
+	"license": "Apache-2.0",
 	"description" : "lsys module event",
 	"autoload" : {
 		"psr-4" : {
