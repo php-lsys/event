@@ -2,5 +2,6 @@
 namespace TestEvent;
 use LSYS\EventManager\Event;
 class TestEvent extends Event{
-    const TEST="TEST_01";
+    //建议小写并用.号分割
+    const TEST="test.dome";
 }
