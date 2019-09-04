@@ -7,6 +7,14 @@
  */
 namespace LSYS\EventManager;
 interface EventObserver{
+    /**
+     * listen event name
+     * @return string||array
+     */
     public function eventName();
+    /**
+     * listen callback function
+     * @param Event $event
+     */
     public function eventNotify(Event $event);
 }

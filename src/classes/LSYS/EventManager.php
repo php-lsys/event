@@ -8,7 +8,6 @@
 namespace LSYS;
 use LSYS\EventManager\Event;
 use LSYS\EventManager\EventObserver;
-
 class EventManager{
     /**
      * @var array
@@ -20,19 +19,27 @@ class EventManager{
      * @return $this
      */
     public function attach(EventObserver $observer){
-        $this->storage[$observer->eventName()][]=$observer;
+        $name=$observer->eventName();
+        if (is_string($name))$name=[$name];
+        foreach ($name as $v) $this->storage[$v][]=$observer;
         return $this;
     }
     /**
      * check callback in listen
+     * return event name
      * @param EventObserver $observer
-     * @return bool
+     * @return array
      */
     public function contains (EventObserver $observer) {
-        foreach ($this->storage[$observer->eventName()]??[] as $v){
-            if($v===$observer)return true;
+        $name=$observer->eventName();
+        if (is_string($name))$name=[$name];
+        $outname=[];
+        foreach ($name as $v){
+            foreach ($this->storage[$v]??[] as $ob){
+                if($ob===$observer)$outname[]=$v;
+            }
         }
-        return false;
+        return $outname;
     }
     /**
      * detach callback on listen
@@ -40,18 +47,25 @@ class EventManager{
      * @return bool
      */
     public function detach(EventObserver $observer){
-        $event=$observer->eventName();
-        foreach ($this->storage[$event]??[] as $k=>$v){
-            if($v===$observer)unset($this->storage[$event][$k]);
+        $name=$observer->eventName();
+        if (is_string($name))$name=[$name];
+        $deatch=0;
+        foreach ($name as $v){
+            foreach ($this->storage[$v]??[] as $k=>$ob){
+                if($ob===$observer){
+                    unset($this->storage[$v][$k]);
+                    $deatch++;
+                }
+            }
         }
-        return false;
+        return $deatch;
     }
     /**
      * detach all callback on listen
      * @param string $event
      * @return boolean
      */
-    public function detachAll($event_name){//
+    public function detachAll($event_name){
         $this->storage[$event_name]=[];
         return true;
     }
