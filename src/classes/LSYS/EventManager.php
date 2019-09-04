@@ -61,6 +61,21 @@ class EventManager{
         return $deatch;
     }
     /**
+     * return listen event name list
+     * @return array
+     */
+    public function getAttachEvent() {
+        return array_keys($this->storage);
+    }
+    /**
+     * return event name is add observer list
+     * @param string $event_name
+     * @return EventObserver[]
+     */
+    public function getAttachObserver($event_name) {
+        return $this->storage[$event_name]??[];
+    }
+    /**
      * detach all callback on listen
      * @param string $event
      * @return boolean
