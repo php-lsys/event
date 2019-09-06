@@ -18,10 +18,10 @@ class EventManager{
      * @param EventObserver $observer
      * @return $this
      */
-    public function attach(EventObserver $observer){
+    public function attach(EventObserver $observer,$priority=0){
         $name=$observer->eventName();
         if (is_string($name))$name=[$name];
-        foreach ($name as $v) $this->storage[$v][]=$observer;
+        foreach ($name as $v) $this->storage[$v][]=array($observer,$priority);
         return $this;
     }
     /**
@@ -36,7 +36,7 @@ class EventManager{
         $outname=[];
         foreach ($name as $v){
             foreach ($this->storage[$v]??[] as $ob){
-                if($ob===$observer)$outname[]=$v;
+                if($ob[0]===$observer)$outname[]=$v;
             }
         }
         return $outname;
@@ -52,7 +52,7 @@ class EventManager{
         $deatch=0;
         foreach ($name as $v){
             foreach ($this->storage[$v]??[] as $k=>$ob){
-                if($ob===$observer){
+                if($ob[0]===$observer){
                     unset($this->storage[$v][$k]);
                     $deatch++;
                 }
@@ -88,9 +88,14 @@ class EventManager{
      * dispatch listen
      */
     public function dispatch(Event $event){
+        $priority=[];
         $v=$this->storage[$event->getName()]??[];
-        foreach ($v as $c){
-            $c->eventNotify($event);
+        foreach ($v as $k=>$c){
+            $priority[$k]=$c[1];
+        }
+        arsort($priority);
+        foreach (array_keys($priority) as $k){
+            $v[$k][0]->eventNotify($event);
             if($event->isPropagationStopped())break;
         }
     }

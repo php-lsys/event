@@ -10,13 +10,19 @@ final class EventTest extends TestCase
         $data=null;
         $call=new \LSYS\EventManager\EventCallback(TestEvent::TEST,function(TestEvent $event)use(&$data){
             $data=$event->data("sql");
-        });
+            $event->stopPropagation();
+        },1);
         DI::get()->eventManager()->attach($call);
+        $call1=new \LSYS\EventManager\EventCallback(TestEvent::TEST,function(TestEvent $event)use(&$data){
+            $data=3;
+        },0);
+        DI::get()->eventManager()->attach($call1);
         DI::get()->eventManager()->dispatch(TestEvent::test(1));
         $this->assertTrue(count(DI::get()->eventManager()->contains($call))==1);
         $this->assertEquals($data,"1");
         $this->assertTrue(in_array(TestEvent::TEST, DI::get()->eventManager()->getAttachEvent()));
         DI::get()->eventManager()->detach($call);
+        DI::get()->eventManager()->detach($call1);
         DI::get()->eventManager()->dispatch(TestEvent::test(3));
         $this->assertEquals($data,"1");
         DI::get()->eventManager()->attach($call);
