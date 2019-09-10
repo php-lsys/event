@@ -3,7 +3,7 @@ namespace TestEvent;
 use PHPUnit\Framework\TestCase;
 use LSYS\EventManager\DI;
 include_once __DIR__.'/TestEvent.php';
-final class EventTest extends TestCase
+final class TestEventTest extends TestCase
 {
     public function testDispatch()
     {
