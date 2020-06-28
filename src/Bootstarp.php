@@ -7,7 +7,7 @@
 if(!function_exists("func_get_argsname")){
     /**
      * 得到当前函数的参数列表名
-     * @return array|array
+     * @return array
      */
     function func_get_argsname() {
         $var=debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,2);

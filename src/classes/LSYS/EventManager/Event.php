@@ -10,21 +10,39 @@ abstract class Event{
     private $propagationStopped = false;
     private $name;
     private $data;
-    protected function __construct($name=null,array $data=[]){
+    protected function __construct(string $name=null,array $data=[]){
         $this->name=$name;
         $this->data=$data;
     }
-    public function getName(){
+    /**
+     * get event name
+     * @return string
+     */
+    public function getName():string{
         return $this->name;
     }
-    public function data($key=null,$default=null){
+    /**
+     * get event data
+     * @param string|null $key
+     * @param mixed $default
+     * @return mixed
+     */
+    public function data(?string $key=null,$default=null){
         if(is_null($key)) return $this->data;
         return $this->data[$key]??$default;
     }
-    public function isPropagationStopped()
+    /**
+     * check is stop Propagation
+     * @return bool
+     */
+    public function isPropagationStopped():bool
     {
         return $this->propagationStopped;
     }
+    /**
+     * set stop Propagation
+     * @return $this
+     */
     public function stopPropagation()
     {
         $this->propagationStopped = true;
