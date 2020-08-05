@@ -10,7 +10,7 @@ abstract class Event{
     private $propagationStopped = false;
     private $name;
     private $data;
-    protected function __construct(string $name=null,array $data=[]){
+    public function __construct(string $name,$data=null){
         $this->name=$name;
         $this->data=$data;
     }
@@ -27,9 +27,8 @@ abstract class Event{
      * @param mixed $default
      * @return mixed
      */
-    public function data(?string $key=null,$default=null){
-        if(is_null($key)) return $this->data;
-        return $this->data[$key]??$default;
+    public function getData(){
+        RETURN $this->data;
     }
     /**
      * check is stop Propagation

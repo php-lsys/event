@@ -9,7 +9,7 @@ final class TestEventTest extends TestCase
     {
         $data=null;
         $call=new \LSYS\EventManager\EventCallback(TestEvent::TEST,function(TestEvent $event)use(&$data){
-            $data=$event->data("sql");
+            $data=(array)$event->getData()["sql"];
             $event->stopPropagation();
         },1);
         DI::get()->eventManager()->attach($call);
