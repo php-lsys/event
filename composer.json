@@ -6,10 +6,7 @@
 	"autoload" : {
 		"psr-4" : {
 			"LSYS\\" : "src/classes/LSYS/"
-		},
-		"files" : [
-			"src/Bootstarp.php"
-		]
+		}
 	},
 	"require" : {
 		"lsys/core" : "~0.0.1"
